@@ -1,0 +1,104 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
+
+body {
+    margin: 0px;
+    font-family: 'Roboto', sans-serif;
+}
+
+.barra {
+    background: rgb(109, 156, 245);
+    height: 3em;
+    max-height: 3em;
+    border-bottom: 1px solid #ccc;
+    color: white;
+    padding-top: 1em;
+}
+
+.titulo {
+    margin-top: 0px;
+    margin-left: 10px;
+    width: fit-content;
+    display: inline;
+}
+
+.opcion-barra {
+    width: fit-content;
+    display: inline;
+    float: right;
+    padding-right: 20px;
+    height: 100%;
+}
+
+.contenedor {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 2rem;
+    padding-bottom: 5rem;
+}
+
+.opcion-barra a {
+    text-decoration: none;
+    color: white;
+}
+
+
+.encabezado {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+
+.footer {
+  font-size: 12px;
+  background-color: rgb(156, 218, 253);
+  text-align: left;
+  border-top: 2px solid rgba(50, 50, 50, 0.3);
+  color: black;
+  width: 100;
+  bottom: 0px;
+  position: sticky;
+  
+}
+
+.info{
+    margin-top: 0px;
+    margin-left: 10px;
+    width: fit-content;
+    display: inline;
+}
+.opcion-info {
+    width: fit-content;
+    display: contents;
+    float: left;
+    padding-left: 20px;
+    height: 50%;
+}
+.formulario {
+    border: 3px solid rgb(61, 99, 172);
+    border-radius: 1rem;
+    padding: 1rem;
+   
+}
+
+.grupo {
+    margin-bottom: 1rem;
+    color: black;
+}
+
+.control {
+    width: 100%;
+    border: 1px solid rgb(61, 99, 172);
+    line-height: 30px;
+    border-radius: 5px;
+    padding-left: 5px;
+}
+
+.boton {
+    background-color: rgb(61, 99, 172);
+    color: white;
+    border-style: none;
+    line-height: 30px;
+    border-radius: 50px;
+    width: 100%;
+}

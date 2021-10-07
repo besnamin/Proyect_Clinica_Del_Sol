@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clinica Del Sol</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/estilos.css') }}" />
+    {% block estilos %}{% endblock %}
+</head>
+<body>
+    <div class="barra">
+        <h3 class="titulo">Clinica Del Sol</h3>
+        <div class="opcion-barra">
+            <a href="{{ url_for('registro') }}">Registarse</a>
+    </div>
+        <div class="opcion-barra">
+            <a href="{{ url_for('sesion') }}">Iniciar Sesion</a>
+        </div>
+        <div class="opcion-barra">
+            <a href="{{ url_for('index') }}" >Home</a>
+        </div>
+    
+    <div class="contenedor">
+        <div class="encabezado" >
+            <img src="{{ url_for('static', filename='images/logo.png') }}" />
+        </div>
+       
+       {% block contenido %}
+        {% endblock %} 
+    </div>
+          
+    
+    
+</body>
+
+
+{% block scripts %}
+{% endblock %}
+<footer class="footer">
+    <h4 class="info">CONTACTO </h4>
+        <div class="opcion-info">
+            <p > <img src="{{ url_for('static', filename='images/telefono.png') }}" width="1.3%">(+57) 2458645 - (+57) 2804567</p>
+        </div>
+        <div class="opcion-info">
+            <p><img src="{{ url_for('static', filename='images/correo.png') }}"   width="1.3%" ><a href="mailto:tudireccion@email.com">Clinica_del_sol@gmail.com</a> </p>
+        </div>
+    {% block footer %}
+    {% endblock %}
+</footer>
+</html>
