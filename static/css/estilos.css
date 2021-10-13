@@ -29,6 +29,34 @@ body {
     height: 100%;
 }
 
+.barra-lateral {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 25%;
+    background-color: #53e2db;
+    position: relative;
+    height: 100%;
+    overflow: auto;
+    
+}
+.opcion-barra-lateral a{
+    display: block;
+    color: #000;
+    padding: 8px 0 8px 16px;
+    text-decoration: none;
+}
+.opcion-barra-lateral a.active {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.opcion-barra-lateral a:hover:not(.active) {
+    background-color: #555;
+    color: white;
+}
+
+
 .contenedor {
     width: 80%;
     margin-left: auto;
@@ -51,7 +79,7 @@ body {
 
 .footer {
   font-size: 12px;
-  background-color: rgb(156, 218, 253);
+  background-color: rgb(75, 176, 235);
   text-align: left;
   border-top: 2px solid rgba(50, 50, 50, 0.3);
   color: black;

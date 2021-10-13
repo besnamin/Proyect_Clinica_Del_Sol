@@ -20,3 +20,7 @@ ANDRES FERNANDO TUNUBALA TUNUBALA
 8. CREAMOS LAS VISTAS REGISTRO Y SESION, DONDE VAN A IR NUESTROS FORMULARIOS
 9. CREAMOS NUESTRA HOJA DE ESTILOS PARA DARLE FORMA A NUESTRAS VISTAS
 10. EN NUESTRA CLASE APP DEFINIMOS LAS RUTAS Y LOS METODOS.
+11. Creamos los archivos html de las vitas del paciente, para pedir citas, realizar comentatios y cerrar sesion
+12. creamos 2 formularios nuevos para relizar las citas y hacer comentarios
+13. En nuestar app.py definimos las nuevas rutas que creamos y los metodos controladores
+14. En nuestra hoja de estilos le dimos forma a la pagina de inicio del paciente cuando inicie sesion
