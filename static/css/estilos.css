@@ -38,6 +38,7 @@ body {
     position: relative;
     height: 100%;
     overflow: auto;
+    margin-bottom: 10px;
     
 }
 .opcion-barra-lateral a{
@@ -62,7 +63,7 @@ body {
     margin-left: auto;
     margin-right: auto;
     padding-top: 2rem;
-    padding-bottom: 5rem;
+    padding-bottom: 2rem;
 }
 
 .opcion-barra a {
@@ -84,8 +85,9 @@ body {
   border-top: 2px solid rgba(50, 50, 50, 0.3);
   color: black;
   width: 100;
-  bottom: 0px;
+  top: 0%;
   position: sticky;
+  
   
 }
 
@@ -106,6 +108,7 @@ body {
     border: 3px solid rgb(61, 99, 172);
     border-radius: 1rem;
     padding: 1rem;
+    
    
 }
 
@@ -129,4 +132,10 @@ body {
     line-height: 30px;
     border-radius: 50px;
     width: 100%;
+}
+h1{
+    color: #000;
+    
+    
+    
 }

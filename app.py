@@ -43,6 +43,20 @@ def registro():
 def usuario():
         return render_template('paciente.html')
 
+@app.route('/sesion/medico/', methods=["GET", "POST"])
+def medico():
+        return render_template('medico.html')
+
+@app.route('/sesion/medico/citas', methods=["GET", "POST"])
+def citas_progamadas():
+        return render_template('lista_citas.html')
+
+@app.route('/sesion/medico/comentarios', methods=["GET", "POST"])
+def ver_comentarios():
+        return render_template('ver_comentarios.html')
+
+
+
 @app.route('/sesion/usuario/comentario/', methods=["GET", "POST"])
 def comentario():
     if request.method == "GET":
