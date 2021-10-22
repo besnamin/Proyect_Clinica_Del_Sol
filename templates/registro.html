@@ -5,24 +5,29 @@
 
 {% block contenido %}
 <div class="formulario">
-    <form method="POST" action="{{ url_for('sesion') }}" novalidate>
+    <form method="POST" action="{{ url_for('registro') }}" novalidate>
         {{ form.hidden_tag() }}
+        <div class="grupo">
+            {{ form.usuario.label }}
+            {{ form.usuario(class="control") }}
+        </div>
         <div class="grupo">
             {{ form.nombre.label }}
             {{ form.nombre(class="control") }}
-        </div>
-        <div class="grupo">
-            {{ form.apellido.label }}
-            {{ form.apellido(class="control") }}
         </div>
         <div class="grupo">
             {{ form.documento.label }}
             {{ form.documento(class="control") }}
         </div>
         <div class="grupo">
-            {{ form.numero.label }}
-            {{ form.numero(class="control") }}
+            {{ form.correo.label }}
+            {{ form.correo(class="control") }}
         </div>
+        <div class="grupo">
+            {{ form.contrasena.label }}
+            {{ form.contrasena(class="control") }}
+        </div>
+        
         <div class="grupo">
             {{ form.enviar(class="boton") }}
         </div>

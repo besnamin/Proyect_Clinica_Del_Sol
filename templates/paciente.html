@@ -4,19 +4,15 @@
 {% endblock %}
 
 {% block contenido %}
-<div class="barra-lateral">
-    <div class="opcion-barra-lateral">
-        <img src="{{ url_for('static', filename='images/paciente.png') }}" width="30%" />
-    </div>
+<div class="encabezado">
+    
     <div class="opcion-barra-lateral">
         <a class="active" href="{{ url_for('cita') }}">Solicitar Cita</a>
     </div>
     <div class="opcion-barra-lateral">
-        <a href="{{ url_for('comentario') }}">Realizar Comentario</a>
+        <a href="{{ url_for('get_listado_mensajes') }}">Ver citas</a>
     </div>
-    <div class="opcion-barra-lateral">
-        <a href="{{ url_for('index') }}" >Cerrar Sesion</a>
-    </div>
+    
     
 </div>
 {% endblock %}

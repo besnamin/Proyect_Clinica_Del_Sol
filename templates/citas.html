@@ -7,17 +7,23 @@
 <div class="formulario">
     <form method="POST" action="{{ url_for('cita') }}" novalidate>
         {{ form.hidden_tag() }}
+        
+        <div class="grupo">
+            {{ form.nombre.label }}
+            {{ form.nombre(class="control") }}
+        </div>
         <div class="grupo">
             {{ form.medico.label }}
             {{ form.medico(class="control") }}
         </div>
+        
         <div class="grupo">
-            {{ form.fecha.label }}
-            {{ form.fecha(class="control") }}
+            {{ form.fechas.label }}
+            {{ form.fechas(class="control") }}
         </div>
         <div class="grupo">
-            {{ form.hora.label }}
-            {{ form.hora(class="control", rows="5") }}
+            {{ form.correo.label }}
+            {{ form.correo(class="control") }}
         </div>
         <div class="grupo">
             {{ form.enviar(class="boton") }}

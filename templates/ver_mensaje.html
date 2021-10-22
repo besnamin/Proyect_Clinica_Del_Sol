@@ -1,0 +1,41 @@
+{% extends 'layout.html' %}
+{% block contenido %}
+<div class="formulario">
+    <h2>Consulta de Cita</h2>
+    {% if item %}    
+        <div class="grupo">
+            <label>Usuario:</label>
+            {{ item.usuario }}
+        </div>
+        <div class="grupo">
+            <label>Paciente:</label>
+            {{ item.paciente }}
+        </div>
+        <div class="grupo">
+            <label>Doctor:</label>
+            <p>{{ item.doctor }}</p>
+        </div>
+        <div class="grupo">
+            <label>Fecha:</label>
+            {{ item.fecha }}
+        </div>
+        <div class="grupo">
+            <label>Observaciones:</label>
+            {{ item.observaciones }}
+        </div>
+        <div class="grupo">
+            <label>Calificacion:</label>
+            <p>{{ item.calificacion }}</p>
+        </div>
+    {% else %}
+        <div class="grupo">
+            {% if error %} 
+                {{ error }}
+            {% endif %}
+        </div>
+    {% endif %}
+    <div class="grupo">
+        <a href="{{ url_for('get_listado_mensajes') }}">Ir al listado</a>
+    </div>
+</div>
+{% endblock%}

@@ -1,0 +1,38 @@
+{% extends 'layout.html' %}
+{% block contenido %}
+<div class="formulario">
+    <h2>Listado de Citas</h2>
+    <table class="tabla">
+        <tr>
+            <th>Acciones</th>
+            <th>Usuario</th>
+            <th>Paciente</th>
+            <th>Doctor</th>
+            <th>Fecha</th>
+            <th>Obvservaciones</th>
+            <th>Calificacion</th>
+        </tr>
+        {% if lista %}
+            {% for item in lista %}
+                <tr>
+                    <td>
+                        <a href="{{ url_for('get_cita',fecha = item.fecha)}}">Ver</a>
+                        
+                    </td>
+                    <td>{{ item.usuario }}</td>
+                    <td>{{ item.paciente }}</td>
+                    <td>{{ item.doctor }}</td>
+                    <td>{{ item.fecha }}</td>
+                    <td>{{ item.observaciones }}</td>
+                    <td>{{ item.calificacion }}</td>
+                </tr>
+            {% endfor %}
+        {% else %}
+                <tr>
+                    <td colspan="5">No se encontraron citas en la base de datos</td>
+                </tr>
+        {% endif %}
+    </table>
+
+</div>
+{% endblock %}

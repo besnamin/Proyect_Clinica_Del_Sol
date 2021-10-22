@@ -1,0 +1,43 @@
+{% extends 'layout.html' %}
+{% block contenido %}
+<div class="formulario">
+    <h2>Observaciones</h2>
+    {% if form %}
+    <form action="{{ url_for('get_observacion',  id_usuario=usuario) }}" method="POST" novalidate>
+        {{ form.hidden_tag() }}
+        <div class="grupo">
+            {{ form.usuario.label }}
+            {{ form.usuario(class="control", readonly="")}}
+        </div>
+        <div class="grupo">
+            {{ form.nombre.label }}
+            {{ form.nombre(class="control", readonly="")}}
+        </div>
+        <div class="grupo">
+            {{ form.medico.label }}
+            {{ form.medico(class="control", readonly="")}}
+        </div>
+        <div class="grupo">
+            {{ form.fechas.label }}
+            {{ form.fechas(class="control", readonly="") }}
+        </div>
+        
+        <div class="grupo">
+            {{ form.observacion.label }}
+            {{ form.observacion(class="control", rows="3") }}
+        </div>
+        <div class="grupo">
+            {{ form.enviar(class="boton") }}
+        </div>
+    </form>
+    {% endif %}
+    <div class="mensaje">
+        {% if mensaje %}
+            {{ mensaje }}
+        {% endif %}
+    </div>
+    <div class="grupo">
+        <a href="{{ url_for('get_listado_mensajes_medico') }}">Ir al listado</a>
+    </div>
+</div>
+{% endblock %}

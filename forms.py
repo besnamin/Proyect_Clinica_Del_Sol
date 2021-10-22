@@ -1,19 +1,22 @@
+from random import choice
 from flask_wtf import FlaskForm
 from wtforms import validators
-from wtforms.fields.core import FloatField, RadioField, SelectField, StringField
+from wtforms.fields.core import  RadioField, SelectField, StringField
 from wtforms.fields.simple import PasswordField, SubmitField, TextAreaField
-from wtforms.fields.html5 import DateField,TimeField
+from wtforms.fields.html5 import DateField, DateTimeLocalField,TimeField,DateTimeField
+from wtforms.widgets.html5 import DateTimeInput, DateTimeLocalInput
 
 class FormSesion(FlaskForm):
     nombre = StringField('Usuario', validators=[validators.required(), validators.length(max=100)]) 
-    contraseña = PasswordField('Password', validators=[validators.required(), validators.length(max=100)])
+    contrasena = PasswordField('Password', validators=[validators.required(), validators.length(max=100)])
     enviar = SubmitField('Ingresar')
 
 class FormRegistro(FlaskForm):
-    nombre = StringField('Nombre completo', validators=[validators.required(), validators.length(max=100)]) 
-    apellido = StringField('Apellido', validators=[validators.required(), validators.length(max=100)]) 
-    documento = SelectField ('Tipo de documento', choices=[('Cedula de ciudadania'), ('T.I'), ('Cedula extranjera')], validators=[validators.required()])
-    numero = FloatField ('No De Documento', validators=[validators.required(), validators.length(max=100)]) 
+    usuario = StringField('Nombre de usuario', validators=[validators.required(), validators.length(max=100)]) 
+    nombre= StringField('Nombre Completo', validators=[validators.required(), validators.length(max=100)]) 
+    documento = StringField ('Numero de cocumento', validators=[validators.required(), validators.length(max=100)])
+    correo = StringField('Correo', validators=[validators.required(), validators.length(max=100)]) 
+    contrasena = PasswordField('Contraseña', validators=[validators.required(), validators.length(max=100)]) 
     enviar = SubmitField('Registrarse')
 
 class FormContactanos(FlaskForm):
@@ -24,7 +27,27 @@ class FormContactanos(FlaskForm):
     enviar = SubmitField('Enviar Mensaje')
 
 class FormCitas(FlaskForm):
-    medico = SelectField('Medico', choices=[('Juan Gabriel Espitia Gonzalez'), ('Rafael Eduardo Martinez Perez'), ('Jose Manuel Torres Alvarado3')], validators=[validators.required()])
-    fecha = DateField('Ingrese La Fecha', format='%Y-%m-%d')
-    hora = TimeField('ingrese la hora')
+    usuario = StringField('Nombre De Usuario', validators=[validators.required(), validators.length(max=100)])
+    nombre = StringField('Nombre Completo', validators=[validators.required(), validators.length(max=100)])
+    medico = SelectField (u'Medico',choices=[('Juan Gabriel Espitia Gonzalez', 'Juan Espitia Gonzalez'),('Rafael Eduardo Martinez Perez', 'Rafael Martinez Perez'),('Jose Manuel Torres Alvarado','Jose Torres Alvarado')],coerce=str,validators=[validators.optional()])
+    fechas = DateTimeLocalField('Fecha y Hora', default='', format='%Y-%m-%dT%H:%M')
+    correo = StringField('Correo Electrónico', validators=[validators.required(), validators.length(max=150)])
     enviar = SubmitField('Agendar Cita')
+
+class FormCalificar(FlaskForm):
+    usuario = StringField('Nombre De Usuario', validators=[validators.required(), validators.length(max=100)])
+    nombre = StringField('Nombre Completo', validators=[validators.required(), validators.length(max=100)])
+    medico = StringField('Medico', validators=[validators.required(), validators.length(max=100)])
+    fechas = StringField('Fecha y Hora', validators=[validators.required(), validators.length(max=100)])
+    correo = StringField('Correo Electrónico', validators=[validators.required(), validators.length(max=150)])
+    calificar = SelectField (u'Califique su cita.(5 max- 1 min)',choices=[(1, '1'),(2, '2'),(3,'3'),(4, '4'),(5,'5')],coerce=int,validators=[validators.optional()])
+    enviar = SubmitField('Calificar Cita')
+
+class FormObservacion(FlaskForm):
+    usuario = StringField('Nombre De Usuario', validators=[validators.required(), validators.length(max=100)])
+    nombre = StringField('Nombre Completo', validators=[validators.required(), validators.length(max=100)])
+    medico = StringField('Medico', validators=[validators.required(), validators.length(max=100)])
+    fechas = StringField('Fecha y Hora', validators=[validators.required(), validators.length(max=100)])
+    observacion = TextAreaField('Observaciones', validators=[validators.required(), validators.length(max=500)])
+    enviar = SubmitField('Enviar Observacion')
+    
