@@ -160,11 +160,12 @@ body {
     padding: 0.5rem; /* 1em = 16px | 1rem = 16px pantallas grandes */
     text-align: center;
     vertical-align: middle;
+    color: #000;
 }
 
 .tabla th {
     background-color: rgb(61, 99, 172);
-    color: white;
+    color:white;
 }
 
 #tipo li {

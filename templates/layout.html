@@ -12,7 +12,6 @@
     <div class="barra">
         <h3 class="titulo">Clinica Del Sol</h3>
         {% if g.user %}
-            
             <div class="opcion-barra">
                 <a href="{{ url_for('logout') }}">Salir</a>
             </div>
@@ -28,8 +27,19 @@
                 {{aver.h1}}
             Bienvenido        {{ aver }} 
             </div>
-            {% else %}
-           
+        {% elif g.admin %}
+            <div class="opcion-barra">
+                <div class="opcion-barra">
+                    <a href="{{ url_for('logout3') }}">Salir</a>
+                </div>
+            <div class="opcion-barra">
+                {{aver.h1}}
+             Bienvenido        {{ aver }} 
+            </div>
+        {% else %}
+            <div class="opcion-barra">
+                <a href="{{ url_for('sesion_admin') }}">Administrador</a>
+            </div>
             <div class="opcion-barra">
                 <a href="{{ url_for('registro') }}">Registarse</a>
             </div>

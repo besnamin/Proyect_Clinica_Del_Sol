@@ -34,6 +34,17 @@ def login_required_medico(view):
 
     return wrapped_view
 
+#Decorador para verificar que el paciente es autenticado
+def login_required_admin(view):
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        if g.admin is None:
+            return redirect( url_for('sesion_admin') )
+
+        return view(**kwargs)
+
+    return wrapped_view
+
 
 @app.before_request
 def cargar_usuario_autenticado():
@@ -51,6 +62,14 @@ def cargar_medico_autenticado():
     else:
         g.medic = paciente.cargar2(nombre_usuario)
 
+@app.before_request
+def cargar_admin_autenticado():
+    nombre_usuario = session.get('nombre_usuario')
+    if nombre_usuario is None:
+        g.admin = None
+    else:
+        g.admin = paciente.cargaradmin(nombre_usuario)
+
 
 @app.route('/')
 def index():
@@ -60,13 +79,19 @@ def index():
 @login_required
 def logout():
     session.clear()
-    return redirect( url_for('sesion') )
+    return redirect( url_for('index') )
 
 @app.route("/logout2/")
 @login_required_medico
 def logout2():
     session.clear()
-    return redirect( url_for('sesion_medico') )
+    return redirect( url_for('index') )
+
+@app.route("/logout3/")
+@login_required_admin
+def logout3():
+    session.clear()
+    return redirect( url_for('index') )
 
 @app.route('/sesion/', methods=["GET", "POST"])
 def sesion():
@@ -106,6 +131,25 @@ def sesion_medico():
         return render_template('sesion_medico.html', mensaje="Nombre de usuario o contraseña incorrecta.", 
         form=formulario)
 
+@app.route('/sesion-admin/', methods=["GET", "POST"])
+def sesion_admin():
+    if request.method=="GET":
+        return render_template('sesion_admin.html', form=FormSesion())
+    else:
+        formulario = FormSesion(request.form)
+
+        usr = formulario.nombre.data.replace("'","")
+        pwd = formulario.contrasena.data.replace("'","")
+
+        obj_usuario = paciente(usr,'','','',pwd)
+        if obj_usuario.autenticar3():
+            session.clear()
+            session["nombre_usuario"] = usr
+            return redirect( url_for('admin'))
+        
+        return render_template('sesion_admin.html', mensaje="Nombre de usuario o contraseña incorrecta.", 
+        form=formulario)
+
 @app.route('/registro/', methods=["GET", "POST"])
 def registro():
     if request.method == "GET":
@@ -119,15 +163,17 @@ def registro():
                 #Aqui podrias agregar más adelante un código para enviar correo electrónico al usuario
                 #y que pueda activar su cuenta.
                 return render_template('registro.html', mensaje="Se registró el usuario exitosamente.", form=FormRegistro())
-
+            return render_template('registro.html', mensaje="El nombre de usuario ya existe,pruebe con otro.", form=formulario)
         return render_template('registro.html', mensaje="Todos los datos son obligatorios.", form=formulario)
 
-@app.route('/admin/registro_medico/', methods=["GET", "POST"])
+@app.route('/sesion/administrador/registro_medico/', methods=["GET", "POST"])
+@login_required_medico
 def registro_medico():
     if request.method == "GET":
         formulario = FormRegistro()
-        return render_template('registro_medico.html', form=formulario)
+        return render_template('registro_medico.html', form=formulario )
     else:
+        nombre_usuario = session.get('nombre_usuario') 
         formulario = FormRegistro(request.form)
         if formulario.validate_on_submit():
             obj_usuario = paciente(formulario.usuario.data, formulario.nombre.data, formulario.documento.data, formulario.correo.data, formulario.contrasena.data)
@@ -149,37 +195,47 @@ def usuario():
 def medico():
         return render_template('medico.html', aver=session.get('nombre_usuario'))
 
+@app.route('/sesion/administrador/', methods=["GET", "POST"])
+@login_required_admin
+def admin():
+        return render_template('administrador.html', aver=session.get('nombre_usuario'))
 
+@app.route('/sesion/administrador/citas/', methods=["GET"])
+@login_required_admin
+def get_todas_citas():
+    return render_template('todas_citas.html', lista=citas.listado3(),aver=session.get('nombre_usuario'))
 
+@app.route('/sesion/administrador/pacientes/', methods=["GET"])
+@login_required_admin
+def ver_pacientes():
+    return render_template('ver_pacientes.html', lista=citas.listado4(),aver=session.get('nombre_usuario'))
 
+@app.route('/sesion/administrador/medicos/', methods=["GET"])
+@login_required_admin
+def ver_medicos():
+    return render_template('ver_medicos.html', lista=citas.listado5(),aver=session.get('nombre_usuario'))
 
-@app.route('/sesion/medico/citas/observacion/', methods=["GET", "POST"])
-@login_required
-def comentario():
+@app.route('/registro/', methods=["GET", "POST"])
+
+@app.route('/admin/registrar/', methods=["GET", "POST"])
+@login_required_admin
+def registrar():
     nombre_usuario = session.get('nombre_usuario')
     if request.method == "GET":
-
-        formulario = FormContactanos()
-        return render_template('observacion.html', form=formulario,aver=nombre_usuario)
-
+        formulario = FormRegistro()
+        return render_template('registro_medico.html', form=formulario, aver=nombre_usuario)
     else:
-        formulario = FormContactanos(request.form)
+        formulario = FormRegistro(request.form)
         if formulario.validate_on_submit():
-            
-            #Instanciamos la clase mensaje con los datos 
-            #del formulario que se reciben de la petición
-            #objeto_mensaje = mensaje(0, formulario.nombre.data,
-            #formulario.correo.data, formulario.mensaje.data, None, 'S')
+            obj_usuario = paciente(formulario.usuario.data, formulario.nombre.data, formulario.documento.data, formulario.correo.data, formulario.contrasena.data)
+            if obj_usuario.insertar2():
+                #Aqui podrias agregar más adelante un código para enviar correo electrónico al usuario
+                #y que pueda activar su cuenta.
+                return render_template('registro_medico.html', mensaje="Se registró el medico exitosamente.", form=FormRegistro(), aver =session.get('nombre_usuario'))
 
-            #Invocamos el método insertar para guardar el mensaje en bd
-            #if objeto_mensaje.insertar():
-            yag = yagmail.SMTP('alertasmisiontic2022@gmail.com','prueba123')
-            yag.send(to=formulario.correo.data,subject="Su mensaje ha sido recibido.",
-                        contents="Hola {0}, hemos recibido tu mensaje. En breve nos comunicaremos contigo.".format(formulario.nombre.data))
-            return render_template('observacion.html',mensaje="Su mensaje ha sido enviado.", form=FormContactanos(), aver=session.get('nombre_usuario'))
-            
+        return render_template('registro_medico.html', mensaje="Todos los datos son obligatorios.", form=formulario, aver=nombre_usuario)
 
-        return render_template('observacion.html', mensaje="Todos los campos son obligatorios.", form=formulario, aver=nombre_usuario)
+
     
 @app.route('/sesion/usuario/citas/', methods=["GET", "POST"])
 @login_required
@@ -219,7 +275,8 @@ def get_listado_mensajes():
     objeto_cita = citas( formulario.usuario.data, None,None, None,None, None)
     if objeto_cita.listado():
         return render_template('lista_citas.html', lista=objeto_cita.listado(),aver=session.get('nombre_usuario'), form=FormCitas() )
-
+    else: 
+         return render_template('paciente.html', mensaje="Aun no tiene citas programadas", aver=session.get('nombre_usuario')) 
 
 @app.route('/sesion/usuario/ver_citas/<fecha>', methods=["GET"])
 @login_required
@@ -283,10 +340,9 @@ def get_listado_mensajes_medico():
     objeto_cita = citas(  None,None,formulario.documento.data, None,None, None)
     if objeto_cita.listado2():
         return render_template('lista_medico.html',lista=objeto_cita.listado2(), aver=nombre_usuario, form=FormRegistro() )  
-    #if obj_nombre.cargar_nombre():
-        #aaa=obj_nombre.cargar_nombre()
-        #formulario.usuario.data = aaa
-        #return render_template('hola.html', form=formulario,jjj=formulario.usuario.data,tt=nombre_usuario, ll = formulario.documento.data)
+    else: 
+         return render_template('medico.html', mensaje="Aun no tiene citas Asignadas Para Atender", aver=session.get('nombre_usuario')) 
+    
 
 @app.route('/sesion/medico/ver_citas/<fecha>', methods=["GET"])
 @login_required_medico
@@ -300,41 +356,51 @@ def get_cita(fecha):
     
     return render_template('ver_citas.html', aver=nombre_usuario)
 
-@app.route('/sesion/medico/citas/observaciones/<id_usuario>', methods=["GET", "POST"])
+@app.route('/sesion/medico/ver_citas/observacion/', methods=["GET"])
 @login_required_medico
-def get_observacion(id_usuario):
+def get_listado_mensajes_medico2():
+    formulario = FormRegistro(request.form)
+    nombre_usuario = session.get('nombre_usuario')
+    formulario.nombre.data = nombre_usuario
+    obj_loco = paciente.cargar2(formulario.nombre.data)  
+    formulario.documento.data = obj_loco.nombre 
+    formulario.usuario.data = obj_loco.usuario
+    objeto_cita = citas(  None,None,formulario.documento.data, None,None, None)
+    if objeto_cita.listado2():
+        return render_template('lista_medico2.html',lista=objeto_cita.listado2(), aver=nombre_usuario ) 
+
+@app.route('/sesion/medico/citas/observaciones/<fecha>', methods=["GET", "POST"])
+@login_required_medico
+def get_observacion(fecha):
     nombre_usuario = session.get('nombre_usuario')
     if request.method == "GET":
         formulario = FormObservacion()
 
-        objeto_cita = citas.cargar(id_usuario)
+        objeto_cita = citas.cargar(fecha)
         if objeto_cita:
             formulario.usuario.data = objeto_cita.usuario
             formulario.nombre.data = objeto_cita.paciente
             formulario.medico.data = objeto_cita.doctor
             formulario.fechas.data = objeto_cita.fecha
             
-            return render_template('observaciones.html',usuario= id_usuario, form = formulario, aver=session.get('nombre_usuario'))
+            return render_template('observaciones.html',usuario= fecha, form = formulario, aver=session.get('nombre_usuario'))
         
-        return render_template('observaciones.html',usuario= id_usuario, mensaje="No se encontraron citas programadas.", aver=nombre_usuario, formulario= FormObservacion())
+        return render_template('observaciones.html',usuario= fecha, mensaje="No se encontraron citas programadas.", aver=nombre_usuario, formulario= FormObservacion())
 
     else:
         formulario = FormObservacion(request.form)
         if formulario.validate_on_submit():
             
-            objeto_cita = citas.cargar(id_usuario)
+            objeto_cita = citas.cargar(fecha)
             objeto_cita.observacion = formulario.observacion.data
-            objeto_cita.fecha = formulario.fechas.data
-            aa="bals_15@hotmail.com"
+            
+            
             objeto_calificar = citas (None,None,None,objeto_cita.fecha,objeto_cita.observacion,None)
-            if objeto_calificar.responder():
-                yag = yagmail.SMTP('alertasmisiontic2022@gmail.com','prueba123')
-                yag.send(to=aa,subject="Su Calificacion a sido enviada.",
-                        contents="Hola {0}. Su calificacion es: {1}."
-                        .format(formulario.nombre.data,  formulario.observacion.data))
-                return render_template('observaciones.html', item=objeto_calificar, usuario=id_usuario, mensaje="Su Calificacion ha sido enviada.", aver=session.get('nombre_usuario'))
+            if objeto_calificar.responder2():
+                
+                return render_template('observaciones.html', item=objeto_calificar, usuario=fecha, mensaje="Su Observacion ha sido enviada.", aver=session.get('nombre_usuario'))
             else:
                 return render_template('observaciones.html',usuario=usuario,item=objeto_calificar, form=formulario, 
                 mensaje="No se pudo aregistrar su calificacion. Por favor intentelo nuevamente.", aver=nombre_usuario)
 
-        return render_template('observaciones.html',usuario=id_usuario, form=formulario, mensaje="Todos los datos son obligatorios.",aver=nombre_usuario)
+        return render_template('observaciones.html',usuario=fecha, form=formulario, mensaje="Todos los datos son obligatorios.",aver=nombre_usuario)

@@ -1,8 +1,5 @@
 
-
-
 import db
-import app
 
 from werkzeug.security import generate_password_hash, check_password_hash
  
@@ -39,6 +36,16 @@ class paciente():
     @classmethod
     def cargar2(cls, p_usuario):
         sql = "SELECT usuario, nombre, documento,correo FROM medicos WHERE usuario = ?;" 
+        obj = db.ejecutar_select(sql, [p_usuario])
+        if obj:
+            if len(obj)>0:
+                return cls(obj[0]["usuario"], obj[0]["nombre"],obj[0]["documento"], obj[0]["correo"], '******')
+
+        return None
+
+    @classmethod
+    def cargaradmin(cls, p_usuario):
+        sql = "SELECT usuario, nombre, documento,correo FROM administrador WHERE usuario = ?;" 
         obj = db.ejecutar_select(sql, [p_usuario])
         if obj:
             if len(obj)>0:
@@ -83,6 +90,21 @@ class paciente():
         #sql = "SELECT * FROM usuarios WHERE usuario = '" + self.usuario + "' AND contrasena = '"  + self.contrasena + "';"    
         #Para mitigar usamos comandos SQL parametrizados
         sql = "SELECT * FROM medicos WHERE usuario = ?;"
+        obj = db.ejecutar_select(sql, [ self.usuario ])
+        if obj:
+            if len(obj) >0:
+                #Agregamos la invocación al metodo check_password_hash
+                #para verificar el password digitado contra el hash seguro almacenado en bd.
+                if check_password_hash(obj[0]["contrasena"], self.contrasena):
+                    return True
+        
+        return False
+
+    def autenticar3(self):
+        #Este query es inseguro porque puede permitir una inyección SQL
+        #sql = "SELECT * FROM usuarios WHERE usuario = '" + self.usuario + "' AND contrasena = '"  + self.contrasena + "';"    
+        #Para mitigar usamos comandos SQL parametrizados
+        sql = "SELECT * FROM administrador WHERE usuario = ?;"
         obj = db.ejecutar_select(sql, [ self.usuario ])
         if obj:
             if len(obj) >0:
@@ -171,10 +193,7 @@ class citas():
         afectadas = db.ejecutar_insert(sql, [ self.calificacion, self.fecha ])
         return ( afectadas > 0 )
 
-    def responder2(self):
-        sql = "UPDATE citas SET observacion = ?  WHERE fecha= ?;"
-        afectadas = db.ejecutar_insert(sql, [ self.observacion, self.fecha ])
-        return ( afectadas > 0 )
+    
 
     def responder2(self):
         sql = "UPDATE citas SET observaciones = ?  WHERE fecha= ?;"
@@ -189,6 +208,21 @@ class citas():
     def listado(self):
         sql = "SELECT * FROM citas  WHERE usuario = ?;"
         return db.ejecutar_select(sql, [self.usuario])
+
+    @staticmethod
+    def listado3():
+        sql = "SELECT * FROM citas ORDER BY id;"
+        return db.ejecutar_select(sql, None)
+
+    @staticmethod
+    def listado4():
+        sql = "SELECT * FROM pacientes ;"
+        return db.ejecutar_select(sql, None)
+
+    @staticmethod
+    def listado5():
+        sql = "SELECT * FROM medicos ;"
+        return db.ejecutar_select(sql, None)
        
     
     @staticmethod

@@ -1,0 +1,33 @@
+{% extends 'layout.html' %}
+
+{% block estilos %}
+{% endblock %}
+
+{% block contenido %}
+<div class="encabezado">
+    
+    <div class="opcion-barra-lateral">
+        <a class="active" href="{{ url_for('ver_pacientes') }}">Ver Pacientes</a>
+    </div>
+    <div class="opcion-barra-lateral">
+        <a  href="{{ url_for('ver_medicos') }}">Ver Medicos</a>
+    </div>
+    <div class="opcion-barra-lateral">
+        <a href="{{ url_for('get_todas_citas') }}">Ver Citas</a>
+    </div>
+    <div class="opcion-barra-lateral">
+        <a href="{{ url_for('registrar') }}">Registrar Medico</a>
+    </div>
+    
+    
+    
+</div>
+<div class="mensaje">
+    {% if mensaje %}
+        {{ mensaje }}
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

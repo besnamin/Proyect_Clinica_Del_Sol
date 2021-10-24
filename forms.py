@@ -17,7 +17,7 @@ class FormRegistro(FlaskForm):
     documento = StringField ('Numero de cocumento', validators=[validators.required(), validators.length(max=100)])
     correo = StringField('Correo', validators=[validators.required(), validators.length(max=100)]) 
     contrasena = PasswordField('Contraseña', validators=[validators.required(), validators.length(max=100)]) 
-    enviar = SubmitField('Registrarse')
+    enviar = SubmitField('Registrar')
 
 class FormContactanos(FlaskForm):
     nombre = StringField('Nombre Completo', validators=[validators.required(), validators.length(max=100)]) 

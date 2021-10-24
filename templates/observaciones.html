@@ -3,7 +3,7 @@
 <div class="formulario">
     <h2>Observaciones</h2>
     {% if form %}
-    <form action="{{ url_for('get_observacion',  id_usuario=usuario) }}" method="POST" novalidate>
+    <form action="{{ url_for('get_observacion',  fecha=usuario) }}" method="POST" novalidate>
         {{ form.hidden_tag() }}
         <div class="grupo">
             {{ form.usuario.label }}
@@ -37,7 +37,7 @@
         {% endif %}
     </div>
     <div class="grupo">
-        <a href="{{ url_for('get_listado_mensajes_medico') }}">Ir al listado</a>
+        <a href="{{ url_for('get_listado_mensajes_medico2') }}">Ir al listado</a>
     </div>
 </div>
 {% endblock %}
