@@ -171,3 +171,18 @@ body {
 #tipo li {
     list-style-type: none;
 }
+
+.tooltip_text {
+    color: rgb(12, 12, 12);
+    border-style: solid;
+    border-color: blue;
+    font-size: 12px;
+    display: none;
+}
+p{
+    color: #000;
+}
+.mensaje{
+    color: #000;
+}
+

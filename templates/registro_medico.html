@@ -5,7 +5,7 @@
 
 {% block contenido %}
 <div class="formulario">
-    <form action="{{ url_for('registrar') }}" method="POST" novalidate>
+    <form action="{{ url_for('registrar') }}" method="POST" onsubmit="return validar_formulario();">
         {{ form.hidden_tag() }}
         <div class="grupo">
             {{ form.usuario.label }}
@@ -15,7 +15,7 @@
             {{ form.nombre.label }}
             {{ form.nombre(class="control") }}
         </div>
-        <div class="grupo">
+        <div class="grupo" onkeypress="return isNumberKey(event)">
             {{ form.documento.label }}
             {{ form.documento(class="control") }}
         </div>
@@ -31,6 +31,9 @@
         <div class="grupo">
             {{ form.enviar(class="boton") }}
         </div>
+        <div>
+            <p id="errores"></p>
+        </div>
         <div class="mensaje">
             {% if mensaje %}
                 {{ mensaje }}
@@ -41,4 +44,5 @@
 {% endblock %}
 
 {% block scripts %}
+<script type="text/javascript" src="{{ url_for('static', filename='js/validacion.js') }}"></script>
 {% endblock %}

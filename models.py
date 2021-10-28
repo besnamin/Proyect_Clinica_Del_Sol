@@ -130,6 +130,16 @@ class paciente():
         return None
 
     @classmethod
+    def cargar_nombre3(cls, p_usuario):
+        sql = "SELECT usuario, nombre, documento,correo FROM pacientes WHERE usuario = ?;" 
+        obj = db.ejecutar_select(sql, [p_usuario])
+        if obj:
+            if len(obj)>0:
+                return cls(obj[0]["usuario"], obj[0]["nombre"],obj[0]["documento"], obj[0]["correo"], '******')
+
+        return None
+
+    @classmethod
     def cargar3(cls, p_usuario):
         sql = "SELECT nombre FROM medicos WHERE usuario = ?;" 
         return db.ejecutar_select(sql, [p_usuario])

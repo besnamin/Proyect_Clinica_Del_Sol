@@ -3,7 +3,7 @@
 <div class="formulario">
     <h2>Calificar Cita</h2>
     {% if form %}
-    <form action="{{ url_for('calificar_cita',  id_fecha=fecha) }}" method="POST" novalidate>
+    <form action="{{ url_for('calificar_cita',  id_fecha=fecha) }}" method="POST" onsubmit="return validar_formulario_calificacion();">
         {{ form.hidden_tag() }}
         <div class="grupo">
             {{ form.usuario.label }}
@@ -32,8 +32,12 @@
         <div class="grupo">
             {{ form.enviar(class="boton") }}
         </div>
+        <div>
+            <p id="errores"></p>
+        </div>
     </form>
     {% endif %}
+    
     <div class="mensaje">
         {% if mensaje %}
             {{ mensaje }}
@@ -43,4 +47,8 @@
         <a href="{{ url_for('get_listado_mensajes') }}">Ir al listado</a>
     </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript" src="{{ url_for('static', filename='js/validacion.js') }}"></script>
 {% endblock %}

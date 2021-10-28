@@ -244,6 +244,10 @@ def cita():
     if request.method == "GET":
 
         formulario = FormCitas()
+        formulario.usuario.data=nombre_usuario
+        objeto_nombre = paciente.cargar_nombre3(formulario.usuario.data)
+        if objeto_nombre:
+            formulario.nombre.data=objeto_nombre.nombre
         return render_template('citas.html', form=formulario, aver=nombre_usuario)
 
     else:
@@ -301,6 +305,7 @@ def calificar_cita(id_fecha):
             formulario.nombre.data = objeto_cita.paciente
             formulario.medico.data = objeto_cita.doctor
             formulario.fechas.data = objeto_cita.fecha
+            
             
             return render_template('calificar_cita.html',fecha= id_fecha, form = formulario, aver=session.get('nombre_usuario'))
         

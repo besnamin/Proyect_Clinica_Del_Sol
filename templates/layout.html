@@ -29,9 +29,8 @@
             </div>
         {% elif g.admin %}
             <div class="opcion-barra">
-                <div class="opcion-barra">
-                    <a href="{{ url_for('logout3') }}">Salir</a>
-                </div>
+                 <a href="{{ url_for('logout3') }}">Salir</a>
+            </div>
             <div class="opcion-barra">
                 {{aver.h1}}
              Bienvenido        {{ aver }} 
@@ -90,7 +89,7 @@
                 <p > <img src="{{ url_for('static', filename='images/telefono.png') }}" width="1.3%">(+57) 2458645 - (+57) 2804567</p>
             </div>
             <div class="opcion-info">
-                <p><img src="{{ url_for('static', filename='images/correo.png') }}"   width="1.3%" ><a href="mailto:tudireccion@email.com">Clinica_del_sol@gmail.com</a> </p>
+                <p><img src="{{ url_for('static', filename='images/correo.png') }}"   width="1.3%" ><a href="mailto:tudireccion@email.com">clinica.del.sol.100@gmail.com</a> </p>
             </div>
         {% block footer %}
         {% endblock %}
